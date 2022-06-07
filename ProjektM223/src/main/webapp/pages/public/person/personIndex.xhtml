@@ -17,6 +17,13 @@
 					</p:column>
 
 					<p:column>
+						<f:facet name="header">
+							<h:outputText value="#{bundle.personAge}" />
+						</f:facet>
+						<h:outputText value="#{person.age}" />
+					</p:column>
+
+					<p:column>
 						<p:commandButton icon="pi pi-info" onclick="PF('personDetailDialogWidget').show()" update=":personDetailDialogForm" >
 							<f:setPropertyActionListener target="#{personBean.personWithLanguagesForDetail}" value="#{person}" />
 						</p:commandButton> 
