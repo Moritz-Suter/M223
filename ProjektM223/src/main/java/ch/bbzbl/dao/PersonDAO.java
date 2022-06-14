@@ -23,4 +23,12 @@ public class PersonDAO extends GenericDAO<Person> {
 	public void delete(Person person) {
         	super.delete(person.getId());
 	}
+
+	public Person findPersonWithColour(int personId) {
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("personId", personId);
+
+		return super.findOneResult(Person.FIND_PERSON_BY_ID_WITH_COLOUR, parameters);
+	}
+
 }
