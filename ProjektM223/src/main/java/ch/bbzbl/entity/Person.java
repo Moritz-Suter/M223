@@ -16,6 +16,9 @@ public class Person implements Serializable {
 	public static final String FIND_PERSON_BY_ID_WITH_LANGUAGES = "Person.findPersonByIdWithLanguages";
 	public static final String FIND_PERSON_BY_ID_WITH_COLOUR = "Person.findPersonByIdWithColour";
 
+	@Version
+	private long version;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
@@ -90,5 +93,13 @@ public class Person implements Serializable {
 
 	public void setColour(Colour favColour) {
 		this.favColour = favColour;
+	}
+
+	public long getVersion() {
+		return version;
+	}
+
+	public void setVersion(long version) {
+		this.version = version;
 	}
 }
