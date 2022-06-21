@@ -9,6 +9,9 @@ import javax.persistence.*;
 public class Colour implements Serializable{
     private static final long serialVersionUID = 1L;
 
+    @Version
+    private long version;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -48,5 +51,13 @@ public class Colour implements Serializable{
     @Override
     public String toString() {
         return name;
+    }
+
+    public long getVersion() {
+        return version;
+    }
+
+    public void setVersion(long version) {
+        this.version = version;
     }
 }
