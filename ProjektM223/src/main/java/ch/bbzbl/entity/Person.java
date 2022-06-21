@@ -9,6 +9,7 @@ import javax.persistence.*;
 
 @Entity
 @NamedQuery(name = "Person.findPersonByIdWithLanguages", query = "select p from Person p left join fetch p.languages where p.id = :personId")
+@NamedQuery(name = "Person.findPersonByIdWithColour", query = "select p from  Person  p left join fetch p.favColour where p.id = :personId")
 public class Person implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -76,11 +77,18 @@ public class Person implements Serializable {
 		return false;
 	}
 
-	public Colour getFavColour() {
+	public Colour getColour() {
 		return favColour;
 	}
 
-	public void setFavColour(Colour favColour) {
+
+	public List<Colour> getColourList() {
+		List<Colour> pipikacka = new ArrayList<>();
+		pipikacka.add(favColour);
+		return pipikacka;
+	}
+
+	public void setColour(Colour favColour) {
 		this.favColour = favColour;
 	}
 }

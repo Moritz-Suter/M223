@@ -8,7 +8,7 @@
 			#{bundle.personAddColourTo}: <h:outputText value="#{personBean.personWithColour.name}" />
 			<br />
             <p:autoComplete forceSelection="true" value="#{personBean.colour}" label="#{bundle.colour}" required="true" var="colour"
-				itemLabel="#{colour.name}" itemValue="#{colour}" completeMethod="#{colourBean.getAllColours}" dropdown="true" />
+				itemLabel="#{colour.name}" itemValue="#{colour}" completeMethod="#{personBean.getRemainingColours}" dropdown="true" />
 			<br />
 			<br />
 
