@@ -5,9 +5,11 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 
+import ch.bbzbl.dao.ColourDAO;
 import ch.bbzbl.dao.EntityManagerHelper;
 import ch.bbzbl.dao.LanguageDAO;
 import ch.bbzbl.dao.PersonDAO;
+import ch.bbzbl.entity.Colour;
 import ch.bbzbl.entity.Language;
 import ch.bbzbl.entity.Person;
 
@@ -16,6 +18,7 @@ public class PersonFacade implements Serializable {
 	
 	private PersonDAO personDAO = new PersonDAO();
 	private LanguageDAO languageDAO = new LanguageDAO();
+	private ColourDAO colourDAO = new ColourDAO();
 
 	public void createPerson(Person person) {
 		EntityManagerHelper.beginTransaction();
@@ -70,12 +73,29 @@ public class PersonFacade implements Serializable {
 		EntityManagerHelper.commitAndCloseTransaction();
 	}
 
+
 	public void removeLanguageFromPerson(int languageId, int personId) {
 		EntityManagerHelper.beginTransaction();
 		Language language = languageDAO.find(languageId);
 		Person person = personDAO.find(personId);
 		person.getLanguages().remove(language);
 		language.getPersons().remove(person);
+		EntityManagerHelper.commitAndCloseTransaction();
+	}
+
+	public Person findPersonWithColour(int personId) {
+		EntityManagerHelper.beginTransaction();
+		Person person = personDAO.findPersonWithColour(personId);
+		EntityManagerHelper.commitAndCloseTransaction();
+		return person;
+
+	}
+
+	public void addColourToPerson(int colourId, int personId) {
+		EntityManagerHelper.beginTransaction();
+		Colour colour = colourDAO.find(colourId);
+		Person person = personDAO.find(personId);
+		person.setFavColour(colour);
 		EntityManagerHelper.commitAndCloseTransaction();
 	}
 }

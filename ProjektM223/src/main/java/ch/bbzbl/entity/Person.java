@@ -1,14 +1,11 @@
 package ch.bbzbl.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.NamedQuery;
+import javax.persistence.*;
 
 @Entity
 @NamedQuery(name = "Person.findPersonByIdWithLanguages", query = "select p from Person p left join fetch p.languages where p.id = :personId")
@@ -16,7 +13,8 @@ public class Person implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	public static final String FIND_PERSON_BY_ID_WITH_LANGUAGES = "Person.findPersonByIdWithLanguages";
-	
+	public static final String FIND_PERSON_BY_ID_WITH_COLOUR = "Person.findPersonByIdWithColour";
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
@@ -25,6 +23,13 @@ public class Person implements Serializable {
 
 	@ManyToMany
 	private List<Language> languages;
+
+	@ManyToOne
+	@JoinColumn (name = "colour", foreignKey = @javax.persistence.ForeignKey(name = "colourKey"))
+	private Colour favColour;
+
+	public Person() {
+	}
 
 	public int getId() {
 		return id;
@@ -69,5 +74,13 @@ public class Person implements Serializable {
 		}
 
 		return false;
+	}
+
+	public Colour getFavColour() {
+		return favColour;
+	}
+
+	public void setFavColour(Colour favColour) {
+		this.favColour = favColour;
 	}
 }

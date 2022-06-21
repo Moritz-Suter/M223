@@ -8,6 +8,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
+import ch.bbzbl.entity.Colour;
 import com.sun.faces.context.flash.ELFlash;
 
 import ch.bbzbl.entity.Language;
@@ -22,13 +23,18 @@ public class PersonBean extends AbstractBean implements Serializable {
 	private static final String SELECTED_PERSON = "selectedPerson";
 
 	private Language language;
+	private Colour colour;
+	private Person personWithColour;
+	private Person personWithColourForDetail;
 	private Person person;
 	private Person personWithLanguages;
 	private Person personWithLanguagesForDetail;
 
 	@ManagedProperty(value="#{languageBean}")
 	private LanguageBean languageBean;
-	
+
+	@ManagedProperty(value="#{colourBean}")
+	private ColourBean colourBean;
 
 	private List<Person> persons;
 	private PersonFacade personFacade;
@@ -134,6 +140,67 @@ public class PersonBean extends AbstractBean implements Serializable {
 		return "/pages/public/person/personLanguages/personLanguages.xhtml";
 	}
 
+	public void addColourToPerson() {
+		try {
+			getPersonFacade().addColourToPerson(colour.getId(), personWithColour.getId());
+			closeDialog();
+			displayInfoMessageToUser("Added with success");
+			reloadPersonWithLanguages();
+			resetLanguage();
+		} catch (Exception e) {
+			keepDialogOpen();
+			displayErrorMessageToUser("A problem occurred while saving. Try again later");
+			e.printStackTrace();
+		}
+	}
+
+	public void removeColourFromPerson() {
+		try {
+			getPersonFacade().removeLanguageFromPerson(colour.getId(), personWithColour.getId());
+			closeDialog();
+			displayInfoMessageToUser("Removed with success");
+			reloadPersonWithLanguages();
+			resetLanguage();
+		} catch (Exception e) {
+			keepDialogOpen();
+			displayErrorMessageToUser("A problem occurred while removing. Try again later");
+			e.printStackTrace();
+		}
+	}
+
+	public String editPersonColours() {
+		ELFlash.getFlash().put(SELECTED_PERSON, person);
+		return "/pages/public/person/personColour/personColour.xhtml";
+	}
+
+	public Person getPersonWithColour() {
+		if (personWithColour == null) {
+			person = (Person) ELFlash.getFlash().get(SELECTED_PERSON);
+			personWithColour = getPersonFacade().findPersonWithColour(person.getId());
+		}
+
+		return personWithColour;
+	}
+
+	public void setPersonWithColourForDetail(Person person) {
+		personWithColourForDetail = getPersonFacade().findPersonWithColour(person.getId());
+	}
+
+	public Person getPersonWithColourForDetail() {
+		if (personWithColourForDetail == null) {
+			personWithColourForDetail = new Person();
+			personWithColourForDetail.setFavColour(colour);
+		}
+
+		return personWithColourForDetail;
+	}
+
+	public void resetPersonWithColourForDetail() {
+		personWithColourForDetail = new Person();
+	}
+
+
+
 	public PersonFacade getPersonFacade() {
 		if (personFacade == null) {
 			personFacade = new PersonFacade();
@@ -176,6 +243,8 @@ public class PersonBean extends AbstractBean implements Serializable {
 		return res;
 	}
 
+
+
 	private void loadPersons() {
 		persons = getPersonFacade().listAll();
 	}
@@ -192,8 +261,20 @@ public class PersonBean extends AbstractBean implements Serializable {
 		return language;
 	}
 
+	public Colour getColour() {
+		if (colour == null) {
+			colour = new Colour();
+		}
+
+		return colour;
+	}
+
 	public void setLanguage(Language language) {
 		this.language = language;
+	}
+
+	public void setColour(Colour colour) {
+		this.colour = colour;
 	}
 
 	public void resetLanguage() {
@@ -202,5 +283,13 @@ public class PersonBean extends AbstractBean implements Serializable {
 
 	private void reloadPersonWithLanguages() {
 		personWithLanguages = getPersonFacade().findPersonWithAllLanguages(person.getId());
+	}
+
+	public ColourBean getColourBean() {
+		return colourBean;
+	}
+
+	public void setColourBean(ColourBean colourBean) {
+		this.colourBean = colourBean;
 	}
 }
