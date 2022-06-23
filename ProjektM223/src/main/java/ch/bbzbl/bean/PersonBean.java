@@ -22,6 +22,10 @@ public class PersonBean extends AbstractBean implements Serializable {
 
 	private static final String SELECTED_PERSON = "selectedPerson";
 
+	private String name = null;
+
+	private String passwort = null;
+
 	private Language language;
 	private Colour colour;
 	private Person personWithColour;
@@ -29,7 +33,6 @@ public class PersonBean extends AbstractBean implements Serializable {
 	private Person person;
 	private Person personWithLanguages;
 	private Person personWithLanguagesForDetail;
-
 	@ManagedProperty(value="#{languageBean}")
 	private LanguageBean languageBean;
 
@@ -51,6 +54,22 @@ public class PersonBean extends AbstractBean implements Serializable {
 			displayErrorMessageToUser("A problem occurred while saving. Try again later");
 			e.printStackTrace();
 		}
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getPasswort() {
+		return passwort;
+	}
+
+	public void setPasswort(String passwort) {
+		this.passwort = passwort;
 	}
 
 	public void updatePerson() {
@@ -267,6 +286,21 @@ public class PersonBean extends AbstractBean implements Serializable {
 		}
 
 		return colour;
+	}
+
+	public String loginCheck() {
+		person = getPersonFacade().findPersonByName(name);
+		if(person != null) {
+			if (passwort.equals(person.getPassword())){
+				System.out.println("Haaaaaaaaaaaallo");
+				return "/pages/public/index.xhtml";
+			} else {
+				displayErrorMessageToUser("Falsch du Fotze!");
+				return null;
+			}
+
+		}
+		return null;
 	}
 
 	public void setLanguage(Language language) {

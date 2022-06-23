@@ -49,6 +49,13 @@ public class PersonFacade implements Serializable {
 		return person;
 	}
 
+	public Person findPersonByName(String personName) {
+		EntityManagerHelper.beginTransaction();
+		Person person = personDAO.findPersonByName(personName);
+		EntityManagerHelper.commitAndCloseTransaction();
+		return person;
+	}
+
 	public List<Person> listAll() {
 		EntityManagerHelper.beginTransaction();
 		List<Person> result = personDAO.findAll();

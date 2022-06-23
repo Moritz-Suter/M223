@@ -9,9 +9,12 @@ import javax.persistence.*;
 
 @Entity
 @NamedQuery(name = "Person.findPersonByIdWithLanguages", query = "select p from Person p left join fetch p.languages where p.id = :personId")
+@NamedQuery(name = "Person.findPersonByName", query = "select p from Person p where p.name = :personName")
 public class Person implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+
+	public static final String FIND_PERSON_BY_NAME = "Person.findPersonByName";
 	public static final String FIND_PERSON_BY_ID_WITH_LANGUAGES = "Person.findPersonByIdWithLanguages";
 	public static final String FIND_PERSON_BY_ID_WITH_COLOUR = "Person.findPersonByIdWithColour";
 
@@ -20,6 +23,8 @@ public class Person implements Serializable {
 	private int id;
 	private String name;
 	private int age;
+
+	private String password;
 
 	@ManyToMany
 	private List<Language> languages;
@@ -59,6 +64,14 @@ public class Person implements Serializable {
 
 	public void setLanguages(List<Language> languages) {
 		this.languages = languages;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	@Override
