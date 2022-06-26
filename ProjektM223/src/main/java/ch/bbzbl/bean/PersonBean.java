@@ -2,6 +2,7 @@ package ch.bbzbl.bean;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
@@ -208,7 +209,7 @@ public class PersonBean extends AbstractBean implements Serializable {
 	public Person getPersonWithColourForDetail() {
 		if (personWithColourForDetail == null) {
 			personWithColourForDetail = new Person();
-			personWithColourForDetail.setFavColour(colour);
+			personWithColourForDetail.setColour(colour);
 		}
 
 		return personWithColourForDetail;
@@ -262,7 +263,15 @@ public class PersonBean extends AbstractBean implements Serializable {
 		return res;
 	}
 
-
+	public List<Colour> getRemainingColours(String name) {
+		//get all languages as copy
+		List<Colour> res = new ArrayList<Colour>(this.colourBean.getAllColours());
+		//remove already added languages
+		res.removeAll(personWithColour.getColourList());
+		//remove when name not occurs
+		res.removeIf(l -> l.getName().toLowerCase().contains(name.toLowerCase()) == false);
+		return res;
+	}
 
 	private void loadPersons() {
 		persons = getPersonFacade().listAll();

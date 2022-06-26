@@ -102,7 +102,7 @@ public class PersonFacade implements Serializable {
 		EntityManagerHelper.beginTransaction();
 		Colour colour = colourDAO.find(colourId);
 		Person person = personDAO.find(personId);
-		person.setFavColour(colour);
+		person.setColour(colour);
 		EntityManagerHelper.commitAndCloseTransaction();
 	}
 }
